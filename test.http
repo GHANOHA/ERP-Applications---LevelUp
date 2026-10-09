@@ -1,0 +1,40 @@
+### LevelUp – W2 Inventaris I: OData-queries op de CatalogService
+### Start eerst je server met: cds watch
+### Klik in BAS/VS Code op "Send Request" boven elke query (extensie: REST Client)
+
+@server = http://localhost:4004
+@catalog = {{server}}/odata/v4/catalog
+
+### 0. Wat biedt de service aan? (metadata)
+GET {{catalog}}/$metadata
+
+### 1. Alle games
+GET {{catalog}}/Games
+
+### 2. Enkel titel en prijs, duurste eerst
+GET {{catalog}}/Games?$select=title,price&$orderby=price desc
+
+### 3. Alle RPG's onder 50 euro
+GET {{catalog}}/Games?$filter=genre_code eq 'RPG' and price lt 50&$select=title,price
+
+### 4. Hoeveel games zijn er voor PC?
+GET {{catalog}}/Games/$count?$filter=platform_code eq 'PC'
+
+### 5. Aantal games per platform
+GET {{catalog}}/Games?$apply=groupby((platform_code),aggregate($count as aantal))
+
+### 6. De 3 nieuwste releases
+GET {{catalog}}/Games?$select=title,releaseDate&$orderby=releaseDate desc&$top=3
+
+### 7. Zoeken op titel
+GET {{catalog}}/Games?$search=zelda&$select=title
+
+### 8. Games met genre- en landnaam erbij ($expand)
+GET {{catalog}}/Games?$select=title&$expand=genre($select=name),studioCountry($select=name)
+
+### 9. Uitverkocht (voorraad 0)
+GET {{catalog}}/Games?$filter=stock eq 0&$select=title,stock
+
+### Side quest: genres in het Nederlands
+GET {{catalog}}/Genres?$select=code,name
+Accept-Language: nl

@@ -1,0 +1,11 @@
+ID,title,description,genre_code,platform_code,price,currency_code,stock,releaseDate,studioCountry_code
+a1b2c3d4-0001-4000-8000-000000000001,Elden Ring,Open-wereld actie-RPG in de Tussenlanden,RPG,PS5,49.99,EUR,12,2022-02-25,JP
+a1b2c3d4-0002-4000-8000-000000000002,Baldur's Gate 3,Partygebaseerd rollenspel met beurtgevechten,RPG,PC,59.99,EUR,8,2023-08-03,BE
+a1b2c3d4-0003-4000-8000-000000000003,Mario Kart World,Racen met vrienden in een open wereld,SPORTS,SWITCH,79.99,EUR,20,2025-06-05,JP
+a1b2c3d4-0004-4000-8000-000000000004,EA Sports FC 26,Voetbalsimulatie met de grote competities,SPORTS,PS5,69.99,EUR,0,2025-09-26,CA
+a1b2c3d4-0005-4000-8000-000000000005,Civilization VII,Bouw een rijk dat de tand des tijds doorstaat,STRATEGY,PC,69.99,EUR,5,2025-02-11,US
+a1b2c3d4-0006-4000-8000-000000000006,Hades II,Roguelike actie in de Griekse onderwereld,ACTION,PC,29.99,EUR,15,2025-09-25,US
+a1b2c3d4-0007-4000-8000-000000000007,Halo Infinite,Sciencefiction-shooter met Master Chief,ACTION,XBOX,19.99,EUR,3,2021-12-08,US
+a1b2c3d4-0008-4000-8000-000000000008,The Legend of Zelda: Tears of the Kingdom,Avontuur boven en onder Hyrule,ADVENTURE,SWITCH,59.99,EUR,7,2023-05-12,JP
+a1b2c3d4-0009-4000-8000-000000000009,Tetris Effect: Connected,Klassieke puzzels met muziek en licht,PUZZLE,XBOX,39.99,EUR,9,2020-11-10,JP
+a1b2c3d4-0010-4000-8000-000000000010,Clair Obscur: Expedition 33,Beurtgebaseerd RPG in een Belle Époque-wereld,RPG,PS5,49.99,EUR,4,2025-04-24,FR
