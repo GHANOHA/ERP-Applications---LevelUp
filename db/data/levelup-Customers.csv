@@ -1,0 +1,7 @@
+ID,firstName,lastName,email,country_code
+c1000000-0000-4000-8000-000000000001,Lotte,Peeters,lotte.peeters@example.com,BE
+c1000000-0000-4000-8000-000000000002,Yassine,El Amrani,yassine.elamrani@example.com,BE
+c1000000-0000-4000-8000-000000000003,Noah,Janssens,noah.janssens@example.com,BE
+c1000000-0000-4000-8000-000000000004,Emma,de Vries,emma.devries@example.com,NL
+c1000000-0000-4000-8000-000000000005,Lucas,Dubois,lucas.dubois@example.com,FR
+c1000000-0000-4000-8000-000000000006,Sofia,Maes,sofia.maes@example.com,BE

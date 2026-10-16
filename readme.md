@@ -1,11 +1,11 @@
-# LevelUp – referentieoplossing W2 (Inventaris I)
+# LevelUp – referentieoplossing W3 (Inventaris II: relaties)
 
-Domeinmodel met `cuid`/`managed`, code lists (Genres, Platforms), `Currency`/`Country` via `@sap/cds-common-content`, CSV-data en `test.http`.
-Side quest B (`@assert.target`) zit erin; side quest A (Nederlandse genres) staat in `db/data/levelup-Genres.texts.csv`.
+Bouwt verder op W2. Nieuw: `Customers`, `Orders`, `OrderItems` (composition), `Reviews` (composition onder Games),
+N:M `Games` ↔ `Tags` via `GameTags`, een tweede service `OrderService` (/odata/v4/orders) en side quest `Publishers` (bidirectioneel).
 
 ```bash
 npm install
 cds watch
 ```
 
-Open daarna `test.http` en voer de queries uit. Getest met @sap/cds 10.1 (1 oktober 2026).
+Open `test.http`: queries 10–18 zijn nieuw in W3 (deep insert, cascade delete, geneste $expand). Getest met @sap/cds 10.1 (2 oktober 2026).

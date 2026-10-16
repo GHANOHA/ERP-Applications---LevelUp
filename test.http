@@ -38,3 +38,55 @@ GET {{catalog}}/Games?$filter=stock eq 0&$select=title,stock
 ### Side quest: genres in het Nederlands
 GET {{catalog}}/Genres?$select=code,name
 Accept-Language: nl
+
+
+### =====================================================================
+### W3 · Inventaris II: relaties
+### =====================================================================
+
+@orders = {{server}}/odata/v4/orders
+@lotte = c1000000-0000-4000-8000-000000000001
+
+### 10. Alle orders van Lotte, met items en gametitels, in één call
+GET {{orders}}/Customers({{lotte}})?$select=firstName,lastName&$expand=orders($select=orderDate;$expand=items($select=quantity,unitPrice;$expand=game($select=title)))
+
+### 11. Reviews van Elden Ring met de voornaam van de klant
+GET {{catalog}}/Games(a1b2c3d4-0001-4000-8000-000000000001)/reviews?$select=rating,comment&$expand=customer($select=firstName)
+
+### 12. Games met hun tags (N:M)
+GET {{catalog}}/Games?$select=title&$expand=tags($select=tag_code)
+
+### 13. Omgekeerd: alle story-driven games (N:M, andere richting)
+GET {{catalog}}/Tags('STORY')?$expand=games($expand=game($select=title))
+
+### 14. Deep insert: één order met twee orderregels in één POST
+# @name newOrder
+POST {{orders}}/Orders
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-4000-8000-000000000006",
+  "currency_code": "EUR",
+  "items": [
+    { "game_ID": "a1b2c3d4-0007-4000-8000-000000000007", "quantity": 1, "unitPrice": 19.99 },
+    { "game_ID": "a1b2c3d4-0009-4000-8000-000000000009", "quantity": 2, "unitPrice": 39.99 }
+  ]
+}
+
+### 15. Controle: het nieuwe order heeft 2 items
+GET {{orders}}/Orders({{newOrder.response.body.ID}})?$expand=items
+
+### 16. Order verwijderen: items gaan mee (composition), games blijven
+DELETE {{orders}}/Orders({{newOrder.response.body.ID}})
+
+### 17. Controle: nog altijd 10 games
+GET {{orders}}/Games/$count
+
+### 18. Fout: order zonder klant wordt geweigerd (@mandatory)
+POST {{orders}}/Orders
+Content-Type: application/json
+
+{ "items": [] }
+
+### Side quest: uitgever met al zijn games (bidirectioneel)
+GET {{catalog}}/Publishers?$select=name&$expand=games($select=title)

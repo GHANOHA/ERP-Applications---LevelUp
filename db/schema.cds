@@ -8,31 +8,100 @@ using {
   sap.common.CodeList
 } from '@sap/cds/common';
 
+// Landen, valuta en talen (incl. vertalingen) als kant-en-klare data
 using from '@sap/cds-common-content';
 
+// =====================================================================
+// Catalogus (W2)
+// =====================================================================
 
-/**
- * Een game in de catalogus van LevelUp.
- * cuid    -> key ID : UUID (automatisch gegenereerd)
- * managed -> createdAt, createdBy, modifiedAt, modifiedBy
- */
 entity Games : cuid, managed {
   title         : String(100) @mandatory;
   description   : String(1000);
-  genre         : Association to Genres @assert.target;    // code list + side quest: onbestaande code weigeren
-  platform      : Association to Platforms @assert.target; // code list + side quest
+  genre         : Association to Genres @assert.target;    // N:1
+  platform      : Association to Platforms @assert.target; // N:1
   price         : Decimal(9, 2);
-  currency      : Currency;                   // -> currency_code
+  currency      : Currency;
   stock         : Integer default 0;
   releaseDate   : Date;
-  studioCountry : Country;                    // -> studioCountry_code
+  studioCountry : Country;
+  publisher     : Association to Publishers;                // side quest W3
+
+  // W3 · 1:N composition: een review bestaat niet zonder zijn game
+  reviews       : Composition of many Reviews on reviews.game = $self;
+
+  // W3 · N:M via de link-entity GameTags
+  tags          : Composition of many GameTags on tags.game = $self;
 }
 
-/** Code lists: key 'code' + 'name' en 'descr' (vertaalbaar) */
 entity Genres : CodeList {
   key code : String(20);
 }
 
 entity Platforms : CodeList {
   key code : String(20);
+}
+
+// =====================================================================
+// Klanten en orders (W3)
+// =====================================================================
+
+entity Customers : cuid, managed {
+  firstName : String(80)  @mandatory;
+  lastName  : String(80)  @mandatory;
+  email     : String(120) @mandatory;
+  country   : Country;
+
+  // 1:N association (backlink): een klant "bezit" zijn orders niet,
+  // een order bestaat ook als boekhoudkundig document
+  orders    : Association to many Orders on orders.customer = $self;
+  reviews   : Association to many Reviews on reviews.customer = $self;
+}
+
+entity Orders : cuid, managed {
+  orderDate : DateTime @cds.on.insert: $now;
+  customer  : Association to Customers @mandatory @assert.target; // N:1
+  currency  : Currency;
+
+  // 1:N composition: orderregels bestaan niet zonder hun order
+  items     : Composition of many OrderItems on items.order = $self;
+}
+
+entity OrderItems : cuid {
+  order     : Association to Orders;                         // backlink naar de ouder
+  game      : Association to Games @mandatory @assert.target; // N:1
+  quantity  : Integer @mandatory;
+  unitPrice : Decimal(9, 2);
+}
+
+entity Reviews : cuid, managed {
+  game     : Association to Games;     // ouder (composition vanuit Games)
+  customer : Association to Customers @assert.target;
+  rating   : Integer;                  // validatie 1-5 volgt in W4
+  comment  : String(1000);
+}
+
+// =====================================================================
+// N:M · Games <-> Tags (main quest)
+// =====================================================================
+
+entity Tags : CodeList {
+  key code  : String(20);
+      games : Association to many GameTags on games.tag = $self;
+}
+
+entity GameTags {
+  key game : Association to Games;
+  key tag  : Association to Tags;
+}
+
+// =====================================================================
+// Side quest W3 · bidirectionele association
+// =====================================================================
+
+entity Publishers : cuid, managed {
+  name    : String(100) @mandatory;
+  country : Country;
+  website : String(200);
+  games   : Association to many Games on games.publisher = $self;
 }
