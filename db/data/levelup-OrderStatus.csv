@@ -1,0 +1,4 @@
+code,name,descr,criticality
+OPEN,Open,Order geplaatst maar nog niet betaald,2
+PAID,Betaald,Order betaald,3
+CANCELLED,Geannuleerd,Order geannuleerd; voorraad teruggezet,1
