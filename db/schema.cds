@@ -28,6 +28,9 @@ entity Games : cuid, managed {
   publisher     : Association to Publishers;                // side quest W3
   virtual isNew : Boolean;                                  // side quest W4: berekend, niet opgeslagen
 
+  // W5 · berekend veld voor de kleur van de voorraad in Fiori (1 = rood, 2 = oranje, 3 = groen)
+  stockCriticality : Integer = (stock = 0 ? 1 : (stock < 5 ? 2 : 3));
+
   // W3 · 1:N composition: een review bestaat niet zonder zijn game
   reviews       : Composition of many Reviews on reviews.game = $self;
 
@@ -116,3 +119,14 @@ entity Publishers : cuid, managed {
   website : String(200);
   games   : Association to many Games on games.publisher = $self;
 }
+
+// =====================================================================
+// W5 · Leaderboard als CDS-view: gemiddelde rating en aantal reviews per game
+// =====================================================================
+
+entity GameLeaderboard as select from Reviews {
+  key game.ID                    as ID,
+      game.title                 as title,
+      round(avg(rating), 2)      as avgRating   : Decimal(3, 2),
+      count(*)                   as reviewCount : Integer
+} group by game.ID, game.title;

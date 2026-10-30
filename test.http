@@ -185,3 +185,38 @@ POST {{orders}}/Orders(d1000000-0000-4000-8000-000000000003)/items
 Content-Type: application/json
 
 { "game_ID": "a1b2c3d4-0004-4000-8000-000000000004", "quantity": 999 }
+
+
+### =====================================================================
+### W5 · Beheerder Mode: AdminService met draft + Fiori Elements
+### Apps: http://localhost:4004/admin-games/webapp/index.html
+###       http://localhost:4004/leaderboard/webapp/index.html
+### of via de "Fiori preview"-links op http://localhost:4004
+### =====================================================================
+
+@admin = {{server}}/odata/v4/admin
+
+### 30. Lijst zoals de List Report ze opvraagt (enkel actieve records) + kleur voorraad
+GET {{admin}}/Games?$select=title,stock,stockCriticality&$filter=IsActiveEntity eq true
+
+### 31. Draft: nieuw concept aanmaken (nog niet zichtbaar in de catalogus)
+# @name draft
+POST {{admin}}/Games
+Content-Type: application/json
+
+{}
+
+### 32. Concept invullen
+PATCH {{admin}}/Games(ID={{draft.response.body.ID}},IsActiveEntity=false)
+Content-Type: application/json
+
+{ "title": "Hollow Knight: Silksong", "genre_code": "ACTION", "platform_code": "SWITCH", "price": 19.99, "currency_code": "EUR", "stock": 3 }
+
+### 33. Concept activeren (= "Opslaan" in Fiori). Zonder titel → ASSERT_MANDATORY
+POST {{admin}}/Games(ID={{draft.response.body.ID}},IsActiveEntity=false)/AdminService.draftActivate
+Content-Type: application/json
+
+{}
+
+### 34. Leaderboard (CDS-view): hoogste rating eerst
+GET {{admin}}/GameLeaderboard?$orderby=avgRating desc,reviewCount desc
