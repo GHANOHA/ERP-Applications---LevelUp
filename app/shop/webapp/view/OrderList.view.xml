@@ -1,0 +1,37 @@
+<mvc:View
+  controllerName="levelup.shop.controller.OrderList"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <Page id="orderListPage" title="{i18n>ordersTitle}" showNavButton="true" navButtonPress=".onNavBack">
+    <content>
+      <!-- Tweede model "orders" (OrderService): prefix orders> in elke binding -->
+      <Table
+        items="{
+          path: 'orders>/Orders',
+          parameters: { $expand: 'customer,status' },
+          sorter: { path: 'orderDate', descending: true }
+        }">
+        <columns>
+          <Column><Text text="{i18n>colDate}"/></Column>
+          <Column><Text text="{i18n>colCustomer}"/></Column>
+          <Column hAlign="End"><Text text="{i18n>colTotal}"/></Column>
+          <Column><Text text="{i18n>colStatus}"/></Column>
+        </columns>
+        <items>
+          <ColumnListItem type="Active" press=".onOrderPress">
+            <cells>
+              <Text text="{ path: 'orders>orderDate', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'medium' } }"/>
+              <!-- Expression binding: voornaam + achternaam -->
+              <Text text="{= ${orders>customer/firstName} + ' ' + ${orders>customer/lastName} }"/>
+              <ObjectNumber number="{orders>totalAmount}" unit="{orders>currency_code}"/>
+              <!-- Expression binding: kleur afhankelijk van de status -->
+              <ObjectStatus
+                text="{orders>status/name}"
+                state="{= ${orders>status_code} === 'PAID' ? 'Success' : ${orders>status_code} === 'CANCELLED' ? 'Error' : 'Warning' }"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </content>
+  </Page>
+</mvc:View>

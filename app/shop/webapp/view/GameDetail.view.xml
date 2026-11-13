@@ -1,0 +1,42 @@
+<mvc:View
+  controllerName="levelup.shop.controller.GameDetail"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <!-- Alles op deze pagina is relatief gebonden aan één game (bindElement in de controller) -->
+  <Page id="gameDetailPage" title="{title}" showNavButton="true" navButtonPress=".onNavBack">
+    <content>
+      <ObjectHeader
+        title="{title}"
+        responsive="true">
+        <attributes>
+          <ObjectAttribute title="{i18n>colPrice}" text="{= ${price} + ' ' + ${currency_code} }"/>
+          <ObjectAttribute title="{i18n>genre}" text="{genre/name}"/>
+          <ObjectAttribute title="{i18n>platform}" text="{platform/name}"/>
+          <ObjectAttribute title="{i18n>releaseDate}" text="{ path: 'releaseDate', type: 'sap.ui.model.odata.type.Date' }"/>
+        </attributes>
+        <statuses>
+          <ObjectStatus
+            text="{ path: 'stock', targetType: 'any', formatter: '.formatter.stockText' }"
+            state="{= %{stock} === 0 ? 'Error' : %{stock} &lt; 5 ? 'Warning' : 'Success' }"/>
+        </statuses>
+      </ObjectHeader>
+      <Text text="{description}" class="sapUiMediumMarginBeginEnd sapUiSmallMarginBottom"/>
+
+      <!-- Reviews: aggregation binding op de composition "reviews" van deze game -->
+      <List
+        headerText="{i18n>reviews}"
+        noDataText="{i18n>noReviews}"
+        items="{ path: 'reviews', parameters: { $expand: 'customer' } }">
+        <CustomListItem>
+          <HBox alignItems="Center" class="sapUiSmallMargin">
+            <RatingIndicator value="{rating}" displayOnly="true" class="sapUiSmallMarginEnd"/>
+            <VBox>
+              <Text text="{comment}"/>
+              <Text text="{customer/firstName}" class="sapUiTinyMarginTop"/>
+            </VBox>
+          </HBox>
+        </CustomListItem>
+      </List>
+    </content>
+  </Page>
+</mvc:View>

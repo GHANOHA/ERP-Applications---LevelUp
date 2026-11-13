@@ -1,0 +1,46 @@
+<mvc:View
+  controllerName="levelup.shop.controller.GameList"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <Page id="gameListPage" title="{i18n>shopTitle}">
+    <headerContent>
+      <Button text="{i18n>myOrders}" icon="sap-icon://cart" press=".onNavToOrders"/>
+    </headerContent>
+    <content>
+      <!-- Aggregation binding: één rij per game in /Games -->
+      <Table id="gameTable"
+        items="{
+          path: '/Games',
+          parameters: { $expand: 'genre,platform' },
+          sorter: { path: 'title' }
+        }">
+        <headerToolbar>
+          <Toolbar>
+            <SearchField width="20rem" placeholder="{i18n>searchPlaceholder}" liveChange=".onSearch"/>
+          </Toolbar>
+        </headerToolbar>
+        <columns>
+          <Column><Text text="{i18n>colTitle}"/></Column>
+          <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colPlatform}"/></Column>
+          <Column hAlign="End"><Text text="{i18n>colPrice}"/></Column>
+          <Column><Text text="{i18n>colStock}"/></Column>
+        </columns>
+        <items>
+          <ColumnListItem type="Navigation" press=".onGamePress">
+            <cells>
+              <!-- Property binding: titel en genre-naam -->
+              <ObjectIdentifier title="{title}" text="{genre/name}"/>
+              <Text text="{platform/name}"/>
+              <!-- Type: de prijs wordt opgemaakt volgens de taal van de gebruiker (49,99) -->
+              <ObjectNumber number="{ path: 'price', type: 'sap.ui.model.odata.type.Decimal', constraints: { precision: 9, scale: 2 } }" unit="{currency_code}"/>
+              <!-- Formatter (tekst) en expression binding (kleur); %{...} = ruwe waarde, ${...} = opgemaakte tekst -->
+              <ObjectStatus
+                text="{ path: 'stock', targetType: 'any', formatter: '.formatter.stockText' }"
+                state="{= %{stock} === 0 ? 'Error' : %{stock} &lt; 5 ? 'Warning' : 'Success' }"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </content>
+  </Page>
+</mvc:View>

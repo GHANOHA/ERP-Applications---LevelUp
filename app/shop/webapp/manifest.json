@@ -1,0 +1,61 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "levelup.shop",
+    "type": "application",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": { "version": "1.0.0" },
+    "dataSources": {
+      "catalog": { "uri": "/odata/v4/catalog/", "type": "OData", "settings": { "odataVersion": "4.0" } },
+      "orders":  { "uri": "/odata/v4/orders/",  "type": "OData", "settings": { "odataVersion": "4.0" } }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+  },
+  "sap.ui5": {
+    "rootView": { "viewName": "levelup.shop.view.App", "type": "XML", "id": "app" },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": { "sap.m": {}, "sap.ui.core": {} }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "levelup.shop.i18n.i18n", "supportedLocales": ["", "en"], "fallbackLocale": "" }
+      },
+      "": {
+        "dataSource": "catalog",
+        "settings": { "operationMode": "Server", "autoExpandSelect": true, "earlyRequests": true }
+      },
+      "orders": {
+        "dataSource": "orders",
+        "settings": { "operationMode": "Server", "autoExpandSelect": true }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "levelup.shop.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "async": true
+      },
+      "routes": [
+        { "pattern": "",                 "name": "gameList",   "target": "gameList" },
+        { "pattern": "games/{gameId}",   "name": "gameDetail", "target": "gameDetail" },
+        { "pattern": "orders",           "name": "orderList",  "target": "orderList" }
+      ],
+      "targets": {
+        "gameList":   { "id": "gameList",   "name": "GameList" },
+        "gameDetail": { "id": "gameDetail", "name": "GameDetail" },
+        "orderList":  { "id": "orderList",  "name": "OrderList" }
+      }
+    }
+  }
+}

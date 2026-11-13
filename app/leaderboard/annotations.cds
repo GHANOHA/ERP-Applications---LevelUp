@@ -1,4 +1,4 @@
-using AdminService as service from '../../srv/admin-service';
+
 
 annotate service.GameLeaderboard with @(
   UI.HeaderInfo          : { TypeName: 'Game', TypeNamePlural: 'Top games', Title: { Value: title } },

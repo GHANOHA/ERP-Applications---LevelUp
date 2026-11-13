@@ -1,17 +1,17 @@
-# LevelUp – referentieoplossing W5 (Beheerder Mode: Fiori Elements)
+# LevelUp – referentieoplossing W6 (Etalage: SAPUI5 freestyle)
 
-Bouwt verder op W4. Nieuw:
+Bouwt verder op W5. Nieuw: `app/shop`, een freestyle SAPUI5-app (MVC) op de CatalogService en OrderService.
 
-- `srv/admin-service.cds`: AdminService (/odata/v4/admin) met `@odata.draft.enabled` op Games
-- `db/schema.cds`: berekend veld `stockCriticality` en CDS-view `GameLeaderboard` (group by, avg, count)
-- `app/admin-games`: List Report + Object Page voor Games (annotaties in `annotations.cds`)
-- `app/leaderboard`: List Report met sterrenrating, standaard gesorteerd
-- `app/services.cds`: laadt de annotaties van beide apps
+- `webapp/manifest.json`: twee OData V4-modellen (catalog = standaard, `orders`), i18n, routing (lijst → detail → orders)
+- `view/GameList.view.xml`: tabel met aggregation binding, zoeken (Filter), formatter en expression binding voor de voorraad
+- `view/GameDetail.view.xml`: element binding op één game (`bindElement`), reviews met sterren
+- `view/OrderList.view.xml`: tweede model met prefix `orders>`, statuskleur via expression binding
+- Side quest: `view/fragment/OrderDetail.fragment.xml`: orderregels in een dialoog
+- `i18n/i18n.properties` (Nederlands) en `i18n_en.properties` (Engels)
 
 ```bash
 npm install
 cds watch
 ```
 
-Open daarna http://localhost:4004 en kies een app onder "Web Applications", of de "Fiori preview" bij AdminService.
-`test.http`: queries 30–34 zijn nieuw in W5. Backend getest met @sap/cds 10.1 (23 oktober 2026); de UI5-apps laden SAPUI5 van ui5.sap.com.
+Open http://localhost:4004/shop/webapp/index.html. Getest met @sap/cds 10.1 en SAPUI5 1.136 in een browser (30 oktober 2026).

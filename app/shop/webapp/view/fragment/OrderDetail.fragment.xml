@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <!-- Side quest: herbruikbaar stuk UI zonder eigen controller -->
+  <Dialog id="orderDialog" title="{= 'Order van ' + ${orders>customer/firstName} }" contentWidth="32rem">
+    <content>
+      <List items="{ path: 'orders>items', parameters: { $expand: 'game' } }">
+        <StandardListItem
+          title="{orders>game/title}"
+          description="{= 'Aantal: ' + ${orders>quantity} }"
+          info="{orders>unitPrice} EUR"/>
+      </List>
+    </content>
+    <endButton>
+      <Button text="Sluiten" press=".onCloseDialog"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>
