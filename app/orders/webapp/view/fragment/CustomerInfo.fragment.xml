@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:form="sap.ui.layout.form">
+  <!-- Een fragment heeft geen eigen controller: de bindingen werken op de context van de view die het fragment gebruikt -->
+  <form:SimpleForm
+    id="customerForm"
+    title="{i18n>customer}"
+    editable="false"
+    layout="ResponsiveGridLayout"
+    labelSpanL="3" labelSpanM="4" columnsL="1" columnsM="1">
+    <Label text="{i18n>name}"/>
+    <Text text="{customer/firstName} {customer/lastName}"/>
+    <Label text="{i18n>email}"/>
+    <Link text="{customer/email}" href="mailto:{customer/email}"/>
+    <Label text="{i18n>country}"/>
+    <Text text="{customer/country/name}"/>
+  </form:SimpleForm>
+</core:FragmentDefinition>

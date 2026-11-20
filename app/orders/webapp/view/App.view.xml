@@ -1,0 +1,9 @@
+<mvc:View
+  controllerName="levelup.orders.controller.App"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:f="sap.f"
+  displayBlock="true"
+  height="100%">
+  <!-- De FCL heeft drie kolommen: begin, mid en end. Het aantal zichtbare kolommen komt uit appView>/layout -->
+  <f:FlexibleColumnLayout id="fcl" layout="{appView>/layout}" backgroundDesign="Translucent"/>
+</mvc:View>

@@ -24,9 +24,17 @@
 
       <!-- Reviews: aggregation binding op de composition "reviews" van deze game -->
       <List
-        headerText="{i18n>reviews}"
+        id="reviewList"
         noDataText="{i18n>noReviews}"
         items="{ path: 'reviews', parameters: { $expand: 'customer' } }">
+        <headerToolbar>
+          <Toolbar>
+            <Title text="{i18n>reviews}"/>
+            <ToolbarSpacer/>
+            <!-- W7 · opent de dialog uit fragment/ReviewDialog.fragment.xml -->
+            <Button text="{i18n>writeReview}" icon="sap-icon://edit" press=".onOpenReviewDialog"/>
+          </Toolbar>
+        </headerToolbar>
         <CustomListItem>
           <HBox alignItems="Center" class="sapUiSmallMargin">
             <RatingIndicator value="{rating}" displayOnly="true" class="sapUiSmallMarginEnd"/>

@@ -1,0 +1,61 @@
+<mvc:View
+  controllerName="levelup.orders.controller.OrderDetail"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  xmlns="sap.m">
+  <Page id="orderDetailPage" title="{i18n>orderTitle}" showFooter="true">
+    <headerContent>
+      <Button
+        icon="{= ${appView>/layout} === 'MidColumnFullScreen' ? 'sap-icon://exit-full-screen' : 'sap-icon://full-screen' }"
+        tooltip="{i18n>fullScreen}"
+        press=".onToggleFullScreen"/>
+      <Button icon="sap-icon://decline" tooltip="{i18n>close}" press=".onClose"/>
+    </headerContent>
+    <content>
+      <ObjectHeader
+        title="{customer/firstName} {customer/lastName}"
+        responsive="true">
+        <attributes>
+          <ObjectAttribute title="{i18n>colDate}" text="{orderDate}"/>
+          <ObjectAttribute title="{i18n>colTotal}" text="{totalAmount} {currency_code}"/>
+        </attributes>
+        <statuses>
+          <ObjectStatus
+            text="{status/name}"
+            state="{= %{status/criticality} === 3 ? 'Success' : %{status/criticality} === 2 ? 'Warning' : 'Error' }"/>
+        </statuses>
+      </ObjectHeader>
+
+      <!-- Fragment 1: de klantgegevens staan in een apart bestand en worden hier ingevoegd -->
+      <core:Fragment fragmentName="levelup.orders.view.fragment.CustomerInfo" type="XML"/>
+
+      <Table
+        id="itemsTable"
+        headerText="{i18n>items}"
+        items="{ path: 'items' }">
+        <columns>
+          <Column><Text text="{i18n>colGame}"/></Column>
+          <Column hAlign="End"><Text text="{i18n>colQuantity}"/></Column>
+          <Column hAlign="End"><Text text="{i18n>colUnitPrice}"/></Column>
+        </columns>
+        <items>
+          <ColumnListItem type="Navigation" press=".onItemPress">
+            <cells>
+              <Text text="{game/title}"/>
+              <Text text="{quantity}"/>
+              <ObjectNumber number="{unitPrice}" unit="{game/currency_code}"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </content>
+    <footer>
+      <OverflowToolbar>
+        <ToolbarSpacer/>
+        <!-- Enkel een open order kan je betalen of annuleren -->
+        <Button text="{i18n>pay}" type="Accept" enabled="{= %{status_code} === 'OPEN' }" press=".onPay"/>
+        <Button text="{i18n>cancelOrder}" type="Reject" enabled="{= %{status_code} === 'OPEN' }" press=".onCancel"/>
+      </OverflowToolbar>
+    </footer>
+  </Page>
+</mvc:View>

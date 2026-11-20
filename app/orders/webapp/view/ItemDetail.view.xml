@@ -1,0 +1,22 @@
+<mvc:View
+  controllerName="levelup.orders.controller.ItemDetail"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <!-- Side quest: derde kolom met één orderregel -->
+  <Page id="itemDetailPage" title="{game/title}">
+    <headerContent>
+      <Button icon="sap-icon://decline" tooltip="{i18n>close}" press=".onClose"/>
+    </headerContent>
+    <content>
+      <ObjectHeader
+        title="{game/title}">
+        <attributes>
+          <ObjectAttribute title="{i18n>colQuantity}" text="{quantity}"/>
+          <ObjectAttribute title="{i18n>colUnitPrice}" text="{unitPrice} {game/currency_code}"/>
+          <ObjectAttribute title="{i18n>lineTotal}" text="{= (%{quantity} * %{unitPrice}).toFixed(2) + ' ' + %{game/currency_code} }"/>
+          <ObjectAttribute title="{i18n>platform}" text="{game/platform/name}"/>
+        </attributes>
+      </ObjectHeader>
+    </content>
+  </Page>
+</mvc:View>

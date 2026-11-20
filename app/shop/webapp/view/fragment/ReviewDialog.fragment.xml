@@ -1,0 +1,27 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <!-- W7 · Dialog in een fragment. De event handlers (.onSaveReview, ...) staan in GameDetail.controller.js -->
+  <Dialog id="reviewDialog" title="{i18n>writeReview}" contentWidth="26rem">
+    <content>
+      <VBox class="sapUiSmallMargin">
+        <Label text="{i18n>customer}" labelFor="reviewCustomer" required="true"/>
+        <!-- Absolute binding (/Customers): de lijst komt niet uit de game, maar uit de service -->
+        <Select id="reviewCustomer" width="100%" forceSelection="false"
+          items="{ path: '/Customers', sorter: { path: 'firstName' } }">
+          <core:Item key="{ID}" text="{firstName} {lastName}"/>
+        </Select>
+        <Label text="{i18n>rating}" labelFor="reviewRating" class="sapUiSmallMarginTop"/>
+        <RatingIndicator id="reviewRating" value="5" maxValue="5"/>
+        <Label text="{i18n>comment}" labelFor="reviewComment" required="true" class="sapUiSmallMarginTop"/>
+        <TextArea id="reviewComment" width="100%" rows="4" placeholder="{i18n>commentPlaceholder}"/>
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{i18n>save}" type="Emphasized" press=".onSaveReview"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>cancel}" press=".onCloseReviewDialog"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

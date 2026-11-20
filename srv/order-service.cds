@@ -1,4 +1,4 @@
-using { levelup as db } from '../db/schema';
+
 
 /**
  * De kassa van LevelUp: klanten en hun orders.

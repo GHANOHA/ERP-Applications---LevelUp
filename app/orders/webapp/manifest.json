@@ -1,0 +1,55 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "levelup.orders",
+    "type": "application",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": { "version": "1.0.0" },
+    "dataSources": {
+      "orders": { "uri": "/odata/v4/orders/", "type": "OData", "settings": { "odataVersion": "4.0" } }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+  },
+  "sap.ui5": {
+    "rootView": { "viewName": "levelup.orders.view.App", "type": "XML", "id": "app" },
+    "dependencies": {
+      "minUI5Version": "1.123.0",
+      "libs": { "sap.m": {}, "sap.ui.core": {}, "sap.f": {}, "sap.ui.layout": {} }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "levelup.orders.i18n.i18n", "supportedLocales": ["", "en"], "fallbackLocale": "" }
+      },
+      "": {
+        "dataSource": "orders",
+        "settings": { "operationMode": "Server", "autoExpandSelect": true, "earlyRequests": true }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "levelup.orders.view",
+        "controlId": "fcl",
+        "async": true
+      },
+      "routes": [
+        { "pattern": "",                                  "name": "orderList",   "target": ["orderList"] },
+        { "pattern": "orders/{orderId}",                  "name": "orderDetail", "target": ["orderList", "orderDetail"] },
+        { "pattern": "orders/{orderId}/items/{itemId}",   "name": "itemDetail",  "target": ["orderList", "orderDetail", "itemDetail"] }
+      ],
+      "targets": {
+        "orderList":   { "id": "orderList",   "name": "OrderList",   "controlAggregation": "beginColumnPages" },
+        "orderDetail": { "id": "orderDetail", "name": "OrderDetail", "controlAggregation": "midColumnPages" },
+        "itemDetail":  { "id": "itemDetail",  "name": "ItemDetail",  "controlAggregation": "endColumnPages" }
+      }
+    }
+  }
+}
